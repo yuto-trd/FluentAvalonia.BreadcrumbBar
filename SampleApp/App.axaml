@@ -1,0 +1,9 @@
+<Application x:Class="SampleApp.App"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sty="using:FluentAvalonia.Styling">
+    <Application.Styles>
+        <sty:FluentAvaloniaTheme />
+        <StyleInclude Source="avares://FluentAvalonia.BreadcrumbBar/Styling/Styles.axaml" />
+    </Application.Styles>
+</Application>

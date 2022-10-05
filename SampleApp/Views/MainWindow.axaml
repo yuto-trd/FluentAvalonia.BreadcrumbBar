@@ -1,0 +1,22 @@
+<Window x:Class="SampleApp.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:viewModels="using:SampleApp.ViewModels"
+        Title="SampleApp"
+        d:DesignHeight="450"
+        d:DesignWidth="800"
+        x:CompileBindings="True"
+        x:DataType="viewModels:MainViewModel"
+        mc:Ignorable="d">
+    <StackPanel Margin="16" Spacing="8">
+        <TextBox Text="{Binding Text.Value}" />
+        <Button Command="{Binding Add}"
+                CommandParameter="{Binding Text.Value}"
+                Content="Add" />
+
+        <ui:BreadcrumbBar Items="{Binding Items}" />
+    </StackPanel>
+</Window>

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <FluentAvaloniaVersion>2.0.0-preview1</FluentAvaloniaVersion>
+    <RootNamespace>FluentAvalonia</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAvaloniaUI" Version="$(FluentAvaloniaVersion)" />
+  </ItemGroup>
+
+</Project>

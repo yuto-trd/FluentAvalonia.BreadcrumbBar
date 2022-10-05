@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview1" />
+    <PackageReference Include="ReactiveProperty" Version="8.1.2" />
+   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FluentAvalonia.BreadcrumbBar\FluentAvalonia.BreadcrumbBar.csproj" />
+  </ItemGroup>
+</Project>
