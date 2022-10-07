@@ -12,6 +12,8 @@
         x:DataType="viewModels:MainViewModel"
         mc:Ignorable="d">
     <StackPanel Margin="16" Spacing="8">
+        <ui:InfoBar x:Name="InfoBar" />
+
         <TextBox Text="{Binding Text.Value}" />
         <Button Command="{Binding Add}"
                 CommandParameter="{Binding Text.Value}"

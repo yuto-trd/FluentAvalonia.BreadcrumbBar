@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Avalonia;
 using Avalonia.Controls;
@@ -6,10 +8,14 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 
+using FluentAvalonia.UI.Controls;
+
 namespace SampleApp.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : CoreWindow
 {
+    private CancellationTokenSource? _cts;
+
     public MainWindow()
     {
         InitializeComponent();
@@ -35,5 +41,24 @@ public partial class MainWindow : Window
                 BreadcrumbBar.Resources.Remove("BreadcrumbBarChevronFontSize");
             }
         });
+
+        BreadcrumbBar.ItemClicked += BreadcrumbBar_ItemClicked;
+    }
+
+    private async void BreadcrumbBar_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
+    {
+        _cts?.Cancel();
+        _cts = new CancellationTokenSource();
+
+        InfoBar.Content = $"Index: {args.Index}, Item: {args.Item}";
+        InfoBar.IsOpen = true;
+        try
+        {
+            await Task.Delay(5000, _cts.Token);
+            InfoBar.IsOpen = false;
+        }
+        catch (OperationCanceledException)
+        {
+        }
     }
 }
