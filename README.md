@@ -6,9 +6,8 @@
 
 Control library which adds a WinUI BreadcrumbBar to the FluentAvalonia package.
 
-
-![Gif animation](https://github.com/indigo-san/FluentAvalonia.BreadcrumbBar/blob/main/Images/Sample.gif?raw=true)
+![Gif animation](https://raw.githubusercontent.com/indigo-san/FluentAvalonia.BreadcrumbBar/main/Images/Sample.gif)
 
 **[Large style](https://github.com/indigo-san/FluentAvalonia.BreadcrumbBar/blob/main/SampleApp/Views/MainWindow.axaml.cs#L29)**
 
-![Large style](https://github.com/indigo-san/FluentAvalonia.BreadcrumbBar/blob/main/Images/Large.png?raw=true)
+![Large style](https://raw.githubusercontent.com/indigo-san/FluentAvalonia.BreadcrumbBar/main/Images/Large.png)
