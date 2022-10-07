@@ -231,7 +231,11 @@
     <ControlTheme x:Key="{x:Type local:BreadcrumbBar}" TargetType="local:BreadcrumbBar">
         <Setter Property="Template">
             <ControlTemplate>
-                <ItemsRepeater x:Name="PART_ItemsRepeater" />
+                <Grid x:Name="PART_Grid" ColumnDefinitions="Auto,Auto">
+                    <local:BreadcrumbBarItem x:Name="PART_Ellipsis" />
+
+                    <ItemsRepeater x:Name="PART_ItemsRepeater" Grid.Column="1" />
+                </Grid>
             </ControlTemplate>
         </Setter>
     </ControlTheme>

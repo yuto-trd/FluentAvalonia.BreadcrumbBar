@@ -2,7 +2,6 @@
 using Avalonia.Controls.Metadata;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
-using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 
 namespace FluentAvalonia.UI.Controls;
@@ -18,11 +17,6 @@ public class BreadcrumbBarItem : ContentControl
     private BreadcrumbBar _parent;
     private int _itemIndex;
     private Button _button;
-    private Flyout _ellipsisFlyout;
-    private BreadcrumbElementFactory _ellipsisElementFactory;
-    private IDataTemplate _ellipsisDropDownItemDataTemplate;
-    private ItemsRepeater _ellipsisItemsRepeater;
-    private BreadcrumbBarItem _ellipsisItem;
 
     public BreadcrumbBarItem()
     {
@@ -33,13 +27,14 @@ public class BreadcrumbBarItem : ContentControl
 
     internal bool IsEllipsisDropDownItem => PseudoClasses.Contains(":ellipsis-dropdown");
 
+    internal bool IsEllipsisButton => PseudoClasses.Contains(":ellipsis");
+
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
         _button = e.NameScope.Find<Button>("PART_ItemButton");
         _button.Click += OnButtonClick;
     }
-
 
     private void RaiseItemClickedEvent(object content, int index)
     {
@@ -48,108 +43,20 @@ public class BreadcrumbBarItem : ContentControl
 
     private void OnButtonClick(object sender, RoutedEventArgs e)
     {
-        if (_parent != null && PseudoClasses.Contains(":ellipsis"))
+        if (_parent != null)
         {
-            // Open Flyout
-
-            List<object> hiddenElements = _parent.HiddenElements();
-            hiddenElements.Reverse();
-
-            if (_ellipsisDropDownItemDataTemplate is { })
+            if (IsEllipsisButton)
             {
-                _ellipsisElementFactory.UserElementFactory(_ellipsisDropDownItemDataTemplate);
+                _parent.OpenFlyout();
             }
-
-            if (_ellipsisItemsRepeater is { })
+            else if (IsEllipsisDropDownItem)
             {
-                _ellipsisItemsRepeater.Items = hiddenElements;
+                _parent.CloseFlyout();
+                RaiseItemClickedEvent(Content, _itemIndex);
             }
-
-            OpenFlyout();
-        }
-        else if (IsEllipsisDropDownItem
-            && _ellipsisItem is { })
-        {
-            // Once an element has been clicked, close the flyout
-            _ellipsisItem.CloseFlyout();
-            _ellipsisItem.RaiseItemClickedEvent(Content, _itemIndex - 1);
-        }
-        else
-        {
-            RaiseItemClickedEvent(Content, _itemIndex - 1);
-        }
-    }
-
-    private void OpenFlyout()
-    {
-        _ellipsisFlyout?.ShowAt(this);
-    }
-
-    private void CloseFlyout()
-    {
-        _ellipsisFlyout?.Hide();
-    }
-
-    private void InstantiateFlyout()
-    {
-        if (_ellipsisFlyout != null && _ellipsisItemsRepeater != null)
-        {
-            return;
-        }
-
-        // Only if the element has been created visually, instantiate the flyout
-        // Create ItemsRepeater and set the DataTemplate 
-        var ellipsisItemsRepeater = new ItemsRepeater();
-        ellipsisItemsRepeater.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
-
-        _ellipsisElementFactory = new BreadcrumbElementFactory();
-        ellipsisItemsRepeater.ItemTemplate = _ellipsisElementFactory;
-
-        if (_ellipsisDropDownItemDataTemplate is { })
-        {
-            _ellipsisElementFactory.UserElementFactory(_ellipsisDropDownItemDataTemplate);
-        }
-
-        ellipsisItemsRepeater.ElementPrepared += OnFlyoutElementPreparedEvent;
-        ellipsisItemsRepeater.ElementIndexChanged += OnFlyoutElementIndexChangedEvent;
-
-        _ellipsisItemsRepeater = ellipsisItemsRepeater;
-        _ellipsisFlyout = new Flyout();
-        _ellipsisFlyout.FlyoutPresenterClasses.Set("BreadcrumbBarEllipsisFlyout", true);
-
-        // Set the repeater as the content.
-        _ellipsisFlyout.Content = ellipsisItemsRepeater;
-        _ellipsisFlyout.Placement = FlyoutPlacementMode.Bottom;
-    }
-
-    private void OnFlyoutElementPreparedEvent(object sender, ItemsRepeaterElementPreparedEventArgs e)
-    {
-        if (e.Element is BreadcrumbBarItem ellipsisDropDownItem)
-        {
-            ellipsisDropDownItem.SetIsEllipsisDropDownItem(true /*isEllipsisDropDownItem*/);
-        }
-
-        UpdateFlyoutIndex(e.Element, e.Index);
-    }
-
-    private void OnFlyoutElementIndexChangedEvent(object sender, ItemsRepeaterElementIndexChangedEventArgs e)
-    {
-        UpdateFlyoutIndex(e.Element, e.NewIndex);
-    }
-
-    private void UpdateFlyoutIndex(IControl element, int index)
-    {
-        if (_ellipsisItemsRepeater is { })
-        {
-            if (_ellipsisItemsRepeater.ItemsSourceView is { } itemSourceView)
+            else
             {
-                int itemCount = itemSourceView.Count;
-
-                if (element is BreadcrumbBarItem ellipsisDropDownItem)
-                {
-                    ellipsisDropDownItem.SetEllipsisItem(this);
-                    ellipsisDropDownItem.SetIndex(itemCount - index);
-                }
+                RaiseItemClickedEvent(Content, _itemIndex);
             }
         }
     }
@@ -159,23 +66,8 @@ public class BreadcrumbBarItem : ContentControl
         _parent = parent;
     }
 
-    private void SetEllipsisItem(BreadcrumbBarItem ellipsisItem)
-    {
-        _ellipsisItem = ellipsisItem;
-    }
-
-    internal void SetEllipsisDropDownItemDataTemplate(IDataTemplate newDataTemplate)
-    {
-        _ellipsisDropDownItemDataTemplate = newDataTemplate;
-    }
-
     internal void SetEllipsis(bool value)
     {
-        if (value)
-        {
-            InstantiateFlyout();
-        }
-
         PseudoClasses.Set(":ellipsis", value);
     }
 

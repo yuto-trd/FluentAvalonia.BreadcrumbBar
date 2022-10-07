@@ -17,6 +17,8 @@
                 CommandParameter="{Binding Text.Value}"
                 Content="Add" />
 
-        <ui:BreadcrumbBar Items="{Binding Items}" />
+        <CheckBox x:Name="Large" Content="large" />
+
+        <ui:BreadcrumbBar x:Name="BreadcrumbBar" Items="{Binding Items}" />
     </StackPanel>
 </Window>
