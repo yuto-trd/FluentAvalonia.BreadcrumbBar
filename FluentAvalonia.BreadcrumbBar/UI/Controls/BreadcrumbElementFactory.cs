@@ -9,7 +9,7 @@ namespace FluentAvalonia.UI.Controls;
 public class BreadcrumbElementFactory : ElementFactory
 {
     private IElementFactory _itemTemplateWrapper;
-    private List<BreadcrumbBarItem> _breadcrumbPool = new(4);
+    private readonly List<BreadcrumbBarItem> _breadcrumbPool = new(4);
 
     public void UserElementFactory(object newValue)
     {
@@ -46,7 +46,7 @@ public class BreadcrumbElementFactory : ElementFactory
         BreadcrumbBarItem nvi;
         if (_breadcrumbPool.Count > 0)
         {
-            nvi = _breadcrumbPool[_breadcrumbPool.Count - 1];
+            nvi = _breadcrumbPool[^1];
             _breadcrumbPool.RemoveAt(_breadcrumbPool.Count - 1);
         }
         else
@@ -60,8 +60,10 @@ public class BreadcrumbElementFactory : ElementFactory
         {
             if (_itemTemplateWrapper is ItemTemplateWrapper itw)
             {
-                var tempArgs = new ElementFactoryRecycleArgs();
-                tempArgs.Element = newContent as IControl;
+                var tempArgs = new ElementFactoryRecycleArgs
+                {
+                    Element = newContent as IControl
+                };
                 _itemTemplateWrapper.RecycleElement(tempArgs);
 
                 nvi.Content = args.Data;
@@ -115,7 +117,7 @@ public class BreadcrumbElementFactory : ElementFactory
         }
     }
 
-    private void UnlinkElementFromParent(ElementFactoryRecycleArgs args)
+    private static void UnlinkElementFromParent(ElementFactoryRecycleArgs args)
     {
         // We want to unlink the containers from the parent repeater
         // in case we are required to move it to a different repeater.
@@ -178,10 +180,7 @@ internal class ItemTemplateWrapper : IElementFactory
 
             // Template returned null, so insert empty element to render nothing
             // We shouldn't encounter this here, but just in case
-            if (element == null)
-            {
-                element = new Rectangle();
-            }
+            element ??= new Rectangle();
 
             element.SetValue(OriginTemplateProperty, selectedTemplate);
         }
@@ -201,7 +200,7 @@ internal class ItemTemplateWrapper : IElementFactory
     public void RecycleElement(ElementFactoryRecycleArgs args)
     {
         var element = args.Element;
-        IDataTemplate selectedTemplate = _dataTemplate ?? element.GetValue<IDataTemplate>(OriginTemplateProperty);
+        var selectedTemplate = _dataTemplate ?? element.GetValue<IDataTemplate>(OriginTemplateProperty);
 
         var recPool = RecyclePool.GetPoolInstance(selectedTemplate);
 

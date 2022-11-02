@@ -9,10 +9,11 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 
 using FluentAvalonia.UI.Controls;
+using FluentAvalonia.UI.Windowing;
 
 namespace SampleApp.Views;
 
-public partial class MainWindow : CoreWindow
+public partial class MainWindow : AppWindow
 {
     private CancellationTokenSource? _cts;
 

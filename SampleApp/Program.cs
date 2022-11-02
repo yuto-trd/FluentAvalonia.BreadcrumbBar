@@ -4,6 +4,8 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 
+using FluentAvalonia.UI.Windowing;
+
 namespace SampleApp;
 
 internal class Program
@@ -19,5 +21,6 @@ internal class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseFAWindowing()
             .LogToTrace();
 }
