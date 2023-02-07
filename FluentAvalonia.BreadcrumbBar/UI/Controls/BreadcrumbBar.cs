@@ -399,7 +399,7 @@ public class BreadcrumbBar : TemplatedControl
         {
             for (int i = 0; i < size; i++)
             {
-                if (_itemsRepeater.TryGetElement(i) is IControl c)
+                if (_itemsRepeater.TryGetElement(i) is Control c)
                 {
                     _dataProvider.UpdateWidthForPrimaryItem(i, c.DesiredSize.Width);
                 }

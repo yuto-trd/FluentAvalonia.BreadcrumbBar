@@ -10,7 +10,7 @@ namespace FluentAvalonia.UI.Controls;
 [TemplatePart("PART_ItemButton", typeof(Button))]
 [TemplatePart("PART_ContentPresenter", typeof(ContentPresenter))]
 [TemplatePart("PART_EllipsisTextBlock", typeof(TextBlock))]
-[TemplatePart("PART_ChevronTextBlock", typeof(TextBlock))]
+[TemplatePart("PART_ChevronTextBlock", typeof(FontIcon))]
 [PseudoClasses(":last", ":ellipsis", ":ellipsis-dropdown")]
 public class BreadcrumbBarItem : ContentControl
 {
