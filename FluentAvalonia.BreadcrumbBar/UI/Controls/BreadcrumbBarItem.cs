@@ -38,7 +38,14 @@ public class BreadcrumbBarItem : ContentControl
 
     private void RaiseItemClickedEvent(object content, int index)
     {
-        _parent?.RaiseItemClickedEvent(content, index);
+        if (CreatedByBreadcrumbElementFactory)
+        {
+            _parent?.RaiseItemClickedEvent(content, index);
+        }
+        else
+        {
+            _parent?.RaiseItemClickedEvent(DataContext, index);
+        }
     }
 
     private void OnButtonClick(object sender, RoutedEventArgs e)
