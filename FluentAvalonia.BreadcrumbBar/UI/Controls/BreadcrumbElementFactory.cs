@@ -32,29 +32,34 @@ public class BreadcrumbElementFactory : ElementFactory
     {
         object newContent = args.Data;
 
-        if (_itemTemplateWrapper != null)
-        {
-            newContent = _itemTemplateWrapper.GetElement(args);
-        }
-
         if (args.Data is BreadcrumbBarItem breadcrumbItem)
         {
             return breadcrumbItem;
         }
 
+        if (_itemTemplateWrapper != null)
+        {
+            newContent = _itemTemplateWrapper.GetElement(args);
+        }
+
+        if (newContent is BreadcrumbBarItem breadcrumbItem2)
+        {
+            return breadcrumbItem2;
+        }
+
         // Get or create a wrapping container for the data
-        BreadcrumbBarItem nvi;
+        BreadcrumbBarItem breadcrumbItem3;
         if (_breadcrumbPool.Count > 0)
         {
-            nvi = _breadcrumbPool[^1];
+            breadcrumbItem3 = _breadcrumbPool[^1];
             _breadcrumbPool.RemoveAt(_breadcrumbPool.Count - 1);
         }
         else
         {
-            nvi = new BreadcrumbBarItem();
+            breadcrumbItem3 = new BreadcrumbBarItem();
         }
 
-        nvi.CreatedByBreadcrumbElementFactory = true;
+        breadcrumbItem3.CreatedByBreadcrumbElementFactory = true;
 
         if (_itemTemplateWrapper != null)
         {
@@ -66,14 +71,14 @@ public class BreadcrumbElementFactory : ElementFactory
                 };
                 _itemTemplateWrapper.RecycleElement(tempArgs);
 
-                nvi.Content = args.Data;
-                nvi.ContentTemplate = itw;
-                return nvi;
+                breadcrumbItem3.Content = args.Data;
+                breadcrumbItem3.ContentTemplate = itw;
+                return breadcrumbItem3;
             }
         }
 
-        nvi.Content = newContent;
-        return nvi;
+        breadcrumbItem3.Content = newContent;
+        return breadcrumbItem3;
     }
 
     protected override void RecycleElementCore(ElementFactoryRecycleArgs args)
@@ -128,7 +133,7 @@ public class BreadcrumbElementFactory : ElementFactory
     }
 }
 
-internal class ItemTemplateWrapper : IElementFactory
+internal class ItemTemplateWrapper : ElementFactory
 {
     // Internal property to RecyclePool, we'll expose here
     public static readonly AttachedProperty<IDataTemplate> OriginTemplateProperty =
@@ -141,12 +146,7 @@ internal class ItemTemplateWrapper : IElementFactory
 
     public ItemTemplateWrapper(DataTemplateSelector dts) => _dataTemplateSelector = dts;
 
-    // These can be safely ignored since this is internal & we only call
-    // GetElement and RecycleElement
-    public Control Build(object param) => null;
-    public bool Match(object data) => false;
-
-    public Control GetElement(ElementFactoryGetArgs args)
+    protected override Control GetElementCore(ElementFactoryGetArgs args)
     {
         var selectedTemplate = _dataTemplate ?? _dataTemplateSelector.SelectTemplate(args.Data);
 
@@ -197,7 +197,7 @@ internal class ItemTemplateWrapper : IElementFactory
         return element;
     }
 
-    public void RecycleElement(ElementFactoryRecycleArgs args)
+    protected override void RecycleElementCore(ElementFactoryRecycleArgs args)
     {
         var element = args.Element;
         var selectedTemplate = _dataTemplate ?? element.GetValue<IDataTemplate>(OriginTemplateProperty);
