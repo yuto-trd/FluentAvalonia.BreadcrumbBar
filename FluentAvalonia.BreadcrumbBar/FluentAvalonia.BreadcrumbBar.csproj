@@ -12,13 +12,14 @@
     <Description>Control library which adds a WinUI BreadcrumbBar to the FluentAvalonia package</Description>
     <PackageTags>c-sharp;xaml;cross-platform;dotnet;dotnetcore;avalonia;avaloniaui;fluent;fluent-design</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>2.0.0-preview4.1</Version>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <Version>2.0.0-preview5.1</Version>
+    <AssemblyVersion>2.0.0.5</AssemblyVersion>
     <Authors>https://github.com/indigo-san</Authors>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAvaloniaUI" Version="2.0.0-preview4" />
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.0-preview5" />
+    <PackageReference Include="FluentAvaloniaUI" Version="2.0.0-preview5" />
   </ItemGroup>
 
 </Project>

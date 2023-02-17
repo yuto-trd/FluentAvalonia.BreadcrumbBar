@@ -28,7 +28,7 @@ public class BreadcrumbElementFactory : ElementFactory
         }
     }
 
-    protected override IControl GetElementCore(ElementFactoryGetArgs args)
+    protected override Control GetElementCore(ElementFactoryGetArgs args)
     {
         object newContent = args.Data;
 
@@ -67,7 +67,7 @@ public class BreadcrumbElementFactory : ElementFactory
             {
                 var tempArgs = new ElementFactoryRecycleArgs
                 {
-                    Element = newContent as IControl
+                    Element = newContent as Control
                 };
                 _itemTemplateWrapper.RecycleElement(tempArgs);
 
@@ -137,7 +137,7 @@ internal class ItemTemplateWrapper : ElementFactory
 {
     // Internal property to RecyclePool, we'll expose here
     public static readonly AttachedProperty<IDataTemplate> OriginTemplateProperty =
-        AvaloniaProperty.RegisterAttached<ItemTemplateWrapper, IControl, IDataTemplate>("OriginTemplate");
+        AvaloniaProperty.RegisterAttached<ItemTemplateWrapper, Control, IDataTemplate>("OriginTemplate");
 
     private readonly IDataTemplate _dataTemplate;
     private readonly DataTemplateSelector _dataTemplateSelector;
@@ -146,7 +146,7 @@ internal class ItemTemplateWrapper : ElementFactory
 
     public ItemTemplateWrapper(DataTemplateSelector dts) => _dataTemplateSelector = dts;
 
-    protected override IControl GetElementCore(ElementFactoryGetArgs args)
+    protected override Control GetElementCore(ElementFactoryGetArgs args)
     {
         var selectedTemplate = _dataTemplate ?? _dataTemplateSelector.SelectTemplate(args.Data);
 
@@ -166,7 +166,7 @@ internal class ItemTemplateWrapper : ElementFactory
         }
 
         var recPool = RecyclePool.GetPoolInstance(selectedTemplate);
-        IControl element = null;
+        Control element = null;
 
         if (recPool != null)
         {

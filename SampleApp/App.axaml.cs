@@ -11,6 +11,7 @@ public class App : Application
 {
     public override void Initialize()
     {
+        RequestedThemeVariant = Avalonia.Styling.ThemeVariant.Light;
         AvaloniaXamlLoader.Load(this);
     }
 
