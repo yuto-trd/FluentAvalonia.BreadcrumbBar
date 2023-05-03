@@ -49,22 +49,22 @@ internal class BreadcrumbBarDataProvider : SplitDataSourceBase<object, Breadcrum
     {
         if (ShouldChangeDataSource(rawData)) // avoid to create multiple of datasource for the same raw data
         {
-            ItemsSourceView dataSource = null;
-            if (rawData != null)
+            ItemsSourceView? dataSource = null;
+            if (rawData is not null)
             {
                 //Avalonia ItemsSourceView only accepts IEnumerable types
                 dataSource = ItemsSourceView.GetOrCreate(rawData);
             }
             ChangeDataSource(dataSource);
             _rawDataSource = rawData;
-            if (dataSource != null)
+            if (dataSource is not null)
             {
                 MoveAllItemsToPrimaryList();
             }
         }
     }
 
-    public bool ShouldChangeDataSource(IEnumerable rawData)
+    public bool ShouldChangeDataSource(IEnumerable? rawData)
     {
         return rawData != _rawDataSource;
     }
@@ -98,7 +98,7 @@ internal class BreadcrumbBarDataProvider : SplitDataSourceBase<object, Breadcrum
         return index;
     }
 
-    public override object GetAt(int index)
+    public override object? GetAt(int index)
     {
         if (_dataSource != null)
         {
@@ -150,7 +150,7 @@ internal class BreadcrumbBarDataProvider : SplitDataSourceBase<object, Breadcrum
         var vector = GetVector(BreadcrumbBarSplitVectorID.PrimaryList);
         return vector.IndexToIndexInOriginalVector(indexInPrimary);
     }
-    
+
     public int ConvertOverflowIndexToIndex(int indexInOverflow)
     {
         var vector = GetVector(BreadcrumbBarSplitVectorID.OverflowList);
@@ -285,20 +285,20 @@ internal class BreadcrumbBarDataProvider : SplitDataSourceBase<object, Breadcrum
         return (index != -1);
     }
 
-    public void OnDataSourceChanged(object sender, NotifyCollectionChangedEventArgs args)
+    public void OnDataSourceChanged(object? sender, NotifyCollectionChangedEventArgs args)
     {
         switch (args.Action)
         {
-            case NotifyCollectionChangedAction.Add:
+            case NotifyCollectionChangedAction.Add when args.NewItems is not null:
                 OnInsertAt(args.NewStartingIndex, args.NewItems.Count);
                 break;
-            case NotifyCollectionChangedAction.Remove:
+            case NotifyCollectionChangedAction.Remove when args.OldItems is not null:
                 OnRemoveAt(args.OldStartingIndex, args.OldItems.Count);
                 break;
             case NotifyCollectionChangedAction.Reset:
                 OnClear();
                 break;
-            case NotifyCollectionChangedAction.Replace:
+            case NotifyCollectionChangedAction.Replace when args.NewItems is not null && args.OldItems is not null:
                 OnRemoveAt(args.OldStartingIndex, args.OldItems.Count);
                 OnInsertAt(args.NewStartingIndex, args.NewItems.Count);
                 break;
@@ -325,18 +325,15 @@ internal class BreadcrumbBarDataProvider : SplitDataSourceBase<object, Breadcrum
         }
     }
 
-    public void ChangeDataSource(ItemsSourceView newValue)
+    public void ChangeDataSource(ItemsSourceView? newValue)
     {
         var oldValue = _dataSource;
         if (oldValue != newValue)
         {
             //update to new datasource
-            if (oldValue != null)
+            if (oldValue is INotifyCollectionChanged nc)
             {
-                if (oldValue is INotifyCollectionChanged nc)
-                {
-                    nc.CollectionChanged -= OnDataSourceChanged;
-                }
+                nc.CollectionChanged -= OnDataSourceChanged;
             }
 
             Clear();
@@ -387,8 +384,8 @@ internal class BreadcrumbBarDataProvider : SplitDataSourceBase<object, Breadcrum
 
 
 
-    private Action<NotifyCollectionChangedEventArgs> _dataChangedCallback;
-    private IEnumerable _rawDataSource;
-    private ItemsSourceView _dataSource;
+    private Action<NotifyCollectionChangedEventArgs>? _dataChangedCallback;
+    private IEnumerable? _rawDataSource;
+    private ItemsSourceView? _dataSource;
     private double _overflowButtonCachedWidth;
 }

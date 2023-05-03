@@ -14,9 +14,9 @@ namespace FluentAvalonia.UI.Controls;
 [PseudoClasses(":last", ":ellipsis", ":ellipsis-dropdown")]
 public class BreadcrumbBarItem : ContentControl
 {
-    private BreadcrumbBar _parent;
+    private BreadcrumbBar? _parent;
     private int _itemIndex;
-    private Button _button;
+    private Button? _button;
 
     public BreadcrumbBarItem()
     {
@@ -33,22 +33,22 @@ public class BreadcrumbBarItem : ContentControl
     {
         base.OnApplyTemplate(e);
         _button = e.NameScope.Find<Button>("PART_ItemButton");
-        _button.Click += OnButtonClick;
+        if (_button is not null)
+        {
+            _button.Click += OnButtonClick;
+        }
+
     }
 
-    private void RaiseItemClickedEvent(object content, int index)
+    private void RaiseItemClickedEvent(object? content, int index)
     {
-        if (CreatedByBreadcrumbElementFactory)
-        {
-            _parent?.RaiseItemClickedEvent(content, index);
-        }
-        else
-        {
-            _parent?.RaiseItemClickedEvent(DataContext, index);
-        }
+        content = CreatedByBreadcrumbElementFactory
+            ? content
+            : DataContext;
+        _parent?.RaiseItemClickedEvent(content, index);
     }
 
-    private void OnButtonClick(object sender, RoutedEventArgs e)
+    private void OnButtonClick(object? sender, RoutedEventArgs e)
     {
         if (_parent != null)
         {

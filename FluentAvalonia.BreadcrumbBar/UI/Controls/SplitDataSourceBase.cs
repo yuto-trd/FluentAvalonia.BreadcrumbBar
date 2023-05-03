@@ -1,7 +1,4 @@
 ﻿using Avalonia.Collections;
-
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace FluentAvalonia.UI.Controls;
@@ -39,7 +36,7 @@ internal abstract class SplitDataSourceBase<T, TVectorID, AttachedDataType>
         }
     }
 
-    public SplitVector<T, TVectorID> GetVectorForItem(int index)
+    public SplitVector<T, TVectorID>? GetVectorForItem(int index)
     {
         if (index >= 0 && index < RawDataSize)
         {
@@ -65,7 +62,7 @@ internal abstract class SplitDataSourceBase<T, TVectorID, AttachedDataType>
     public void MoveItemToVector(int index, TVectorID newVectorID)
     {
         Debug.Assert(index >= 0 && index < RawDataSize);
-        if (!flags[index].Equals(newVectorID))
+        if (flags[index]?.Equals(newVectorID) is false)
         {
             // remove from the old vector
             var sv = GetVectorForItem(index);
@@ -81,13 +78,13 @@ internal abstract class SplitDataSourceBase<T, TVectorID, AttachedDataType>
             {
                 int pos = GetPreferIndex(index, newVectorID);
                 var value = GetAt(index);
-                toVector.InsertAt(pos, index, value);
+                toVector.InsertAt(pos, index, value!);
             }
         }
     }
 
     public abstract int IndexOf(T value);
-    public abstract T GetAt(int index);
+    public abstract T? GetAt(int index);
     public abstract int Size { get; }
     protected abstract TVectorID DefaultVectorIDOnInsert { get; }
     protected abstract AttachedDataType DefaultAttachedData { get; }
@@ -99,7 +96,7 @@ internal abstract class SplitDataSourceBase<T, TVectorID, AttachedDataType>
         if (indexInOriginalVector != -1)
         {
             var vector = GetVectorForItem(indexInOriginalVector);
-            if (vector != null && vector.GetVectorIDForItem().Equals(vectorID))
+            if (vector?.GetVectorIDForItem()?.Equals(vectorID) is true)
             {
                 index = vector.IndexFromIndexInOriginalVector(indexInOriginalVector);
             }
@@ -198,19 +195,21 @@ internal abstract class SplitDataSourceBase<T, TVectorID, AttachedDataType>
         var vectorID = DefaultVectorIDOnInsert;
         var defaultAttachedData = DefaultAttachedData;
         var preferIndex = GetPreferIndex(index, vectorID);
-        var data = GetAt(index);
 
-        // Update mapping on all Vectors and Insert Item on vectorID vector;
-        foreach (var vector in splitVectors)
+        if (GetAt(index) is T data)
         {
-            if (vector != null)
+            // Update mapping on all Vectors and Insert Item on vectorID vector;
+            foreach (var vector in splitVectors)
             {
-                vector.OnRawDataInsert(preferIndex, index, data, vectorID);
+                if (vector != null)
+                {
+                    vector.OnRawDataInsert(preferIndex, index, data, vectorID);
+                }
             }
-        }
+            flags.Insert(index, vectorID);
+            _attachedData.Insert(index, defaultAttachedData);
 
-        flags.Insert(index, vectorID);
-        _attachedData.Insert(index, defaultAttachedData);
+        }
     }
 
     private int GetPreferIndex(int index, TVectorID vectorID)
@@ -223,7 +222,7 @@ internal abstract class SplitDataSourceBase<T, TVectorID, AttachedDataType>
         int count = 0;
         for (int i = start; i < end; i++)
         {
-            if (flags[i].Equals(vectorID))
+            if (flags[i]?.Equals(vectorID) == true)
             {
                 count++;
             }
@@ -232,8 +231,8 @@ internal abstract class SplitDataSourceBase<T, TVectorID, AttachedDataType>
     }
 
     // length is the same as data source, and used to identify which SplitVector it belongs to.
-    List<TVectorID> flags = new List<TVectorID>();
-    List<AttachedDataType> _attachedData = new List<AttachedDataType>();
+    List<TVectorID> flags = new();
+    List<AttachedDataType> _attachedData = new();
     SplitVector<T, TVectorID>[] splitVectors;
 }
 
@@ -256,7 +255,7 @@ internal class SplitVector<T, TVectorId>
 
     public void OnRawDataRemove(int indexInOriginalVector, TVectorId vectorID)
     {
-        if (_vectorID.Equals(vectorID))
+        if (_vectorID?.Equals(vectorID) == true)
         {
             RemoveAt(indexInOriginalVector);
         }
@@ -279,7 +278,7 @@ internal class SplitVector<T, TVectorId>
                 indicesInOriginalVector[i]++;
             }
         }
-        if (_vectorID.Equals(vectorID))
+        if (_vectorID?.Equals(vectorID) is true)
         {
             InsertAt(preferIndex, indexInOriginalVector, value);
         }
