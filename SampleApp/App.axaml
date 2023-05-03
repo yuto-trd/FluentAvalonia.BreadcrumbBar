@@ -4,7 +4,6 @@
              xmlns:sty="using:FluentAvalonia.Styling">
     <Application.Styles>
         <sty:FluentAvaloniaTheme />
-        <StyleInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/FAWindowingStyles.axaml" />
         <StyleInclude Source="avares://FluentAvalonia.BreadcrumbBar/Styling/Styles.axaml" />
     </Application.Styles>
 </Application>

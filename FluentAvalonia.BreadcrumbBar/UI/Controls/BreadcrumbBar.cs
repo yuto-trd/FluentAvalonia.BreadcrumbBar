@@ -20,9 +20,9 @@ namespace FluentAvalonia.UI.Controls;
 [TemplatePart("PART_Grid", typeof(Grid))]
 public class BreadcrumbBar : TemplatedControl
 {
-    public static readonly DirectProperty<BreadcrumbBar, IEnumerable> ItemsProperty =
-        AvaloniaProperty.RegisterDirect<BreadcrumbBar, IEnumerable>(nameof(Items),
-            x => x.Items, (x, v) => x.Items = v);
+    public static readonly DirectProperty<BreadcrumbBar, IEnumerable> ItemsSourceProperty =
+        AvaloniaProperty.RegisterDirect<BreadcrumbBar, IEnumerable>(nameof(ItemsSource),
+            x => x.ItemsSource, (x, v) => x.ItemsSource = v);
 
     public static readonly StyledProperty<IDataTemplate> ItemTemplateProperty =
         AvaloniaProperty.Register<BreadcrumbBar, IDataTemplate>(nameof(ItemTemplate));
@@ -49,13 +49,13 @@ public class BreadcrumbBar : TemplatedControl
     }
 
     [Content]
-    public IEnumerable Items
+    public IEnumerable ItemsSource
     {
         get => _items;
         set
         {
             var old = _items;
-            if (SetAndRaise(ItemsProperty, ref _items, value))
+            if (SetAndRaise(ItemsSourceProperty, ref _items, value))
             {
                 if (_items is INotifyCollectionChanged oldINCC)
                 {
@@ -99,7 +99,7 @@ public class BreadcrumbBar : TemplatedControl
 
         if (_ellipsisItemsRepeater is { })
         {
-            _ellipsisItemsRepeater.Items = hiddenElements;
+            _ellipsisItemsRepeater.ItemsSource = hiddenElements;
         }
 
         _ellipsisFlyout?.ShowAt(_ellipsisBreadcrumbBarItem);
@@ -132,7 +132,7 @@ public class BreadcrumbBar : TemplatedControl
 
         // Set the repeater as the content.
         _ellipsisFlyout.Content = ellipsisItemsRepeater;
-        _ellipsisFlyout.Placement = FlyoutPlacementMode.Bottom;
+        _ellipsisFlyout.Placement = PlacementMode.Bottom;
     }
 
     private void OnFlyoutElementPreparedEvent(object sender, ItemsRepeaterElementPreparedEventArgs e)
@@ -427,7 +427,7 @@ public class BreadcrumbBar : TemplatedControl
     {
         if (ir != null)
         {
-            ir.Items = source;
+            ir.ItemsSource = source;
         }
     }
 
