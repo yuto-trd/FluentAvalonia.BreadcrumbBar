@@ -27,7 +27,8 @@
 
         <CheckBox x:Name="Large" Content="large" />
 
-        <ui:BreadcrumbBar x:Name="BreadcrumbBar" Items="{Binding Items}">
+        <ui:BreadcrumbBar x:Name="BreadcrumbBar"
+                          ItemsSource="{Binding Items}">
             <ui:BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="viewModels:ItemViewModel">
                     <ui:BreadcrumbBarItem Content="{Binding Text}" />

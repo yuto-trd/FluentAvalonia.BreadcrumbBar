@@ -8,11 +8,10 @@
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview5" />
-    <PackageReference Include="FluentAvalonia.UI.Windowing" Version="2.0.0-preview5" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.999-cibuild0034121-beta" />
     <PackageReference Include="ReactiveProperty" Version="8.2.0" />
-    <PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
-   </ItemGroup>
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.999-cibuild0034121-beta"/>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FluentAvalonia.BreadcrumbBar\FluentAvalonia.BreadcrumbBar.csproj" />
   </ItemGroup>

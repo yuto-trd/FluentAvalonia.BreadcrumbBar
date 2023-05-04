@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>disable</Nullable>
+    <Nullable>enable</Nullable>
     <RootNamespace>FluentAvalonia</RootNamespace>
     <LangVersion>latest</LangVersion>
 
@@ -12,14 +12,19 @@
     <Description>Control library which adds a WinUI BreadcrumbBar to the FluentAvalonia package</Description>
     <PackageTags>c-sharp;xaml;cross-platform;dotnet;dotnetcore;avalonia;avaloniaui;fluent;fluent-design</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>2.0.0-preview5.1</Version>
-    <AssemblyVersion>2.0.0.5</AssemblyVersion>
     <Authors>https://github.com/indigo-san</Authors>
   </PropertyGroup>
 
+  <PropertyGroup Label="Version Info">
+    <AvaloniaVersion>11.0.999-cibuild0034121-beta</AvaloniaVersion>
+    <FluentAvaloniaUIVersion>2.0.0-preview7.1</FluentAvaloniaUIVersion>
+    <Version>$(FluentAvaloniaUIVersion)</Version>
+    <AssemblyVersion>2.0.0.5</AssemblyVersion>
+  </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.0.0-preview5" />
-    <PackageReference Include="FluentAvaloniaUI" Version="2.0.0-preview5" />
+    <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="FluentAvaloniaUI" Version="$(FluentAvaloniaUIVersion)" />
   </ItemGroup>
 
 </Project>

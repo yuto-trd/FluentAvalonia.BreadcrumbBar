@@ -20,24 +20,24 @@ namespace FluentAvalonia.UI.Controls;
 [TemplatePart("PART_Grid", typeof(Grid))]
 public class BreadcrumbBar : TemplatedControl
 {
-    public static readonly DirectProperty<BreadcrumbBar, IEnumerable> ItemsProperty =
-        AvaloniaProperty.RegisterDirect<BreadcrumbBar, IEnumerable>(nameof(Items),
-            x => x.Items, (x, v) => x.Items = v);
+    public static readonly DirectProperty<BreadcrumbBar, IEnumerable> ItemsSourceProperty =
+        AvaloniaProperty.RegisterDirect<BreadcrumbBar, IEnumerable>(nameof(ItemsSource),
+            x => x.ItemsSource, (x, v) => x.ItemsSource = v);
 
-    public static readonly StyledProperty<IDataTemplate> ItemTemplateProperty =
-        AvaloniaProperty.Register<BreadcrumbBar, IDataTemplate>(nameof(ItemTemplate));
+    public static readonly StyledProperty<IDataTemplate?> ItemTemplateProperty =
+        AvaloniaProperty.Register<BreadcrumbBar, IDataTemplate?>(nameof(ItemTemplate));
 
     private IEnumerable _items = new AvaloniaList<object>();
-    private ItemsRepeater _itemsRepeater;
-    private BreadcrumbElementFactory _itemsRepeaterElementFactory;
-    private BreadcrumbBarDataProvider _dataProvider;
-    private BreadcrumbBarItem _ellipsisBreadcrumbBarItem;
-    private BreadcrumbBarItem _lastBreadcrumbBarItem;
-    private Grid _grid;
+    private ItemsRepeater? _itemsRepeater;
+    private BreadcrumbElementFactory? _itemsRepeaterElementFactory;
+    private readonly BreadcrumbBarDataProvider _dataProvider;
+    private BreadcrumbBarItem? _ellipsisBreadcrumbBarItem;
+    private BreadcrumbBarItem? _lastBreadcrumbBarItem;
+    private Grid? _grid;
     private bool _appliedTemplate;
     private bool _layoutInitialized;
-    private ItemsRepeater _ellipsisItemsRepeater;
-    private Flyout _ellipsisFlyout;
+    private ItemsRepeater? _ellipsisItemsRepeater;
+    private Flyout? _ellipsisFlyout;
 
     private readonly float _topNavigationRecoveryGracePeriodWidth = 5f;
 
@@ -49,13 +49,13 @@ public class BreadcrumbBar : TemplatedControl
     }
 
     [Content]
-    public IEnumerable Items
+    public IEnumerable ItemsSource
     {
         get => _items;
         set
         {
             var old = _items;
-            if (SetAndRaise(ItemsProperty, ref _items, value))
+            if (SetAndRaise(ItemsSourceProperty, ref _items, value))
             {
                 if (_items is INotifyCollectionChanged oldINCC)
                 {
@@ -70,13 +70,13 @@ public class BreadcrumbBar : TemplatedControl
         }
     }
 
-    public IDataTemplate ItemTemplate
+    public IDataTemplate? ItemTemplate
     {
         get => GetValue(ItemTemplateProperty);
         set => SetValue(ItemTemplateProperty, value);
     }
 
-    public event TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs> ItemClicked;
+    public event TypedEventHandler<BreadcrumbBar, BreadcrumbBarItemClickedEventArgs>? ItemClicked;
 
     private double MeasureGridDesiredWidth(Size availableSize) =>
         LayoutHelper.MeasureChild(_grid, availableSize, new Thickness()).Width;
@@ -87,9 +87,12 @@ public class BreadcrumbBar : TemplatedControl
     private bool HasBreadcrumbBarItemNotInPrimaryList() =>
         _dataProvider.PrimaryListSize != _dataProvider.Size;
 
-    internal void RaiseItemClickedEvent(object content, int index)
+    internal void RaiseItemClickedEvent(object? content, int index)
     {
-        ItemClicked?.Invoke(this, new BreadcrumbBarItemClickedEventArgs(index, content));
+        if (content is not null)
+        {
+            ItemClicked?.Invoke(this, new BreadcrumbBarItemClickedEventArgs(index, content));
+        }
     }
 
     internal void OpenFlyout()
@@ -97,12 +100,16 @@ public class BreadcrumbBar : TemplatedControl
         object[] hiddenElements = _dataProvider.GetOverflowItems().ToArray();
         Array.Reverse(hiddenElements);
 
-        if (_ellipsisItemsRepeater is { })
+        if (_ellipsisItemsRepeater is not null)
         {
-            _ellipsisItemsRepeater.Items = hiddenElements;
+            _ellipsisItemsRepeater.ItemsSource = hiddenElements;
         }
 
-        _ellipsisFlyout?.ShowAt(_ellipsisBreadcrumbBarItem);
+        if (_ellipsisBreadcrumbBarItem is not null)
+        {
+            _ellipsisFlyout?.ShowAt(_ellipsisBreadcrumbBarItem);
+        }
+
     }
 
     internal void CloseFlyout()
@@ -132,10 +139,10 @@ public class BreadcrumbBar : TemplatedControl
 
         // Set the repeater as the content.
         _ellipsisFlyout.Content = ellipsisItemsRepeater;
-        _ellipsisFlyout.Placement = FlyoutPlacementMode.Bottom;
+        _ellipsisFlyout.Placement = PlacementMode.Bottom;
     }
 
-    private void OnFlyoutElementPreparedEvent(object sender, ItemsRepeaterElementPreparedEventArgs e)
+    private void OnFlyoutElementPreparedEvent(object? sender, ItemsRepeaterElementPreparedEventArgs e)
     {
         if (e.Element is BreadcrumbBarItem item)
         {
@@ -145,14 +152,14 @@ public class BreadcrumbBar : TemplatedControl
             item.SetParentBreadcrumb(this);
 
             // Set the item index to fill the Index parameter in the ClickedEventArgs
-            var itemIndex = _dataProvider.ConvertOverflowIndexToIndex(_ellipsisItemsRepeater.ItemsSourceView.Count - e.Index - 1);
+            var itemIndex = _dataProvider.ConvertOverflowIndexToIndex((_ellipsisItemsRepeater?.ItemsSourceView?.Count ?? 0) - e.Index - 1);
             item.SetIndex(itemIndex);
 
             item.SetLast(false);
         }
     }
 
-    private void OnFlyoutElementIndexChangedEvent(object sender, ItemsRepeaterElementIndexChangedEventArgs e)
+    private void OnFlyoutElementIndexChangedEvent(object? sender, ItemsRepeaterElementIndexChangedEventArgs e)
     {
         if (e.Element is BreadcrumbBarItem item)
         {
@@ -200,7 +207,7 @@ public class BreadcrumbBar : TemplatedControl
         base.OnPropertyChanged(change);
         if (change.Property == ItemTemplateProperty)
         {
-            _itemsRepeaterElementFactory.UserElementFactory(ItemTemplate);
+            _itemsRepeaterElementFactory?.UserElementFactory(ItemTemplate);
         }
     }
 
@@ -262,15 +269,18 @@ public class BreadcrumbBar : TemplatedControl
 
     private void ArrangeBreadcrumbBarItems(Size availableSize)
     {
-        _ellipsisBreadcrumbBarItem.IsVisible = false;
-        var desWidth = MeasureGridDesiredWidth(Size.Infinity);
-        if (!(desWidth < availableSize.Width))
+        if (_ellipsisBreadcrumbBarItem is not null)
         {
-            _ellipsisBreadcrumbBarItem.IsVisible = true;
-            var desWidthForOB = MeasureGridDesiredWidth(Size.Infinity);
-            _dataProvider.OverflowButtonWidth = desWidthForOB - desWidth;
+            _ellipsisBreadcrumbBarItem.IsVisible = false;
+            var desWidth = MeasureGridDesiredWidth(Size.Infinity);
+            if (!(desWidth < availableSize.Width))
+            {
+                _ellipsisBreadcrumbBarItem.IsVisible = true;
+                var desWidthForOB = MeasureGridDesiredWidth(Size.Infinity);
+                _dataProvider.OverflowButtonWidth = desWidthForOB - desWidth;
 
-            ShrinkBreadcrumbBarSize(desWidthForOB, availableSize);
+                ShrinkBreadcrumbBarSize(desWidthForOB, availableSize);
+            }
         }
     }
 
@@ -413,9 +423,9 @@ public class BreadcrumbBar : TemplatedControl
 
     private void UpdateItemsRepeaterItemsSource()
     {
-        _dataProvider.SetDataSource(Items);
+        _dataProvider.SetDataSource(ItemsSource);
 
-        UpdateItemsRepeaterItemsSource(_itemsRepeater, _dataProvider.GetPrimaryItems());
+        UpdateItemsRepeaterItemsSource(_itemsRepeater!, _dataProvider.GetPrimaryItems());
 
         if (_appliedTemplate)
         {
@@ -427,7 +437,7 @@ public class BreadcrumbBar : TemplatedControl
     {
         if (ir != null)
         {
-            ir.Items = source;
+            ir.ItemsSource = source;
         }
     }
 
@@ -447,7 +457,7 @@ public class BreadcrumbBar : TemplatedControl
         }
     }
 
-    private void OnElementPreparedEvent(object sender, ItemsRepeaterElementPreparedEventArgs e)
+    private void OnElementPreparedEvent(object? sender, ItemsRepeaterElementPreparedEventArgs e)
     {
         if (e.Element is BreadcrumbBarItem item)
         {
@@ -472,7 +482,7 @@ public class BreadcrumbBar : TemplatedControl
         }
     }
 
-    private void OnElementIndexChangedEvent(object sender, ItemsRepeaterElementIndexChangedEventArgs e)
+    private void OnElementIndexChangedEvent(object? sender, ItemsRepeaterElementIndexChangedEventArgs e)
     {
         if (e.Element is BreadcrumbBarItem item)
         {
@@ -481,7 +491,7 @@ public class BreadcrumbBar : TemplatedControl
         }
     }
 
-    private void OnElementClearingEvent(object sender, ItemsRepeaterElementClearingEventArgs e)
+    private void OnElementClearingEvent(object? sender, ItemsRepeaterElementClearingEventArgs e)
     {
         if (e.Element is BreadcrumbBarItem item)
         {
@@ -490,15 +500,17 @@ public class BreadcrumbBar : TemplatedControl
         }
     }
 
-    private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void OnItemsCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         ForceUpdateLastElement();
     }
 
-    private void OnBreadcrumbBarItemsRepeaterLoaded(object sender, RoutedEventArgs e)
+    private void OnBreadcrumbBarItemsRepeaterLoaded(object? sender, RoutedEventArgs e)
     {
-        _itemsRepeater.Loaded -= OnBreadcrumbBarItemsRepeaterLoaded;
-
+        if (_itemsRepeater is not null)
+        {
+            _itemsRepeater.Loaded -= OnBreadcrumbBarItemsRepeaterLoaded;
+        }
         ForceUpdateLastElement();
     }
 
@@ -510,7 +522,7 @@ public class BreadcrumbBar : TemplatedControl
 
     private void ForceUpdateLastElement()
     {
-        if (_itemsRepeater.ItemsSourceView != null)
+        if (_itemsRepeater!.ItemsSourceView is not null)
         {
             var itemCount = _dataProvider.Size;
 
@@ -528,15 +540,14 @@ public class BreadcrumbBar : TemplatedControl
         }
     }
 
-    private void UpdateLastElement(BreadcrumbBarItem newLastBreadcrumbBarItem)
+    private void UpdateLastElement(BreadcrumbBarItem? newLastBreadcrumbBarItem)
     {
         // If the element is the last element in the array,
         // then we reset the visual properties for the previous
         // last element
         ResetLastBreadcrumbBarItem();
 
-        if (newLastBreadcrumbBarItem != null)
-            newLastBreadcrumbBarItem.SetLast(true);
+        newLastBreadcrumbBarItem?.SetLast(true);
 
         _lastBreadcrumbBarItem = newLastBreadcrumbBarItem;
     }

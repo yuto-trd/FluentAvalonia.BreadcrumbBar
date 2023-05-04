@@ -8,13 +8,13 @@ namespace FluentAvalonia.UI.Controls;
 
 public class BreadcrumbElementFactory : ElementFactory
 {
-    private IElementFactory _itemTemplateWrapper;
+    private IElementFactory? _itemTemplateWrapper;
     private readonly List<BreadcrumbBarItem> _breadcrumbPool = new(4);
 
-    public void UserElementFactory(object newValue)
+    public void UserElementFactory(object? newValue)
     {
         _itemTemplateWrapper = newValue as IElementFactory;
-        if (_itemTemplateWrapper == null)
+        if (_itemTemplateWrapper is null)
         {
             // ItemTemplate set does not implement IElementFactoryShim. We also want to support DataTemplate.
             if (newValue is IDataTemplate dt)
@@ -30,9 +30,9 @@ public class BreadcrumbElementFactory : ElementFactory
 
     protected override Control GetElementCore(ElementFactoryGetArgs args)
     {
-        object newContent = args.Data;
+        var newContent = args.Data;
 
-        if (args.Data is BreadcrumbBarItem breadcrumbItem)
+        if (newContent is BreadcrumbBarItem breadcrumbItem)
         {
             return breadcrumbItem;
         }
@@ -126,7 +126,7 @@ public class BreadcrumbElementFactory : ElementFactory
     {
         // We want to unlink the containers from the parent repeater
         // in case we are required to move it to a different repeater.
-        if (args.Parent is Panel p)
+        if (args.Parent is Panel p && args.Element is not null)
         {
             p.Children.Remove(args.Element);
         }
@@ -139,34 +139,34 @@ internal class ItemTemplateWrapper : ElementFactory
     public static readonly AttachedProperty<IDataTemplate> OriginTemplateProperty =
         AvaloniaProperty.RegisterAttached<ItemTemplateWrapper, Control, IDataTemplate>("OriginTemplate");
 
-    private readonly IDataTemplate _dataTemplate;
-    private readonly DataTemplateSelector _dataTemplateSelector;
+    private readonly IDataTemplate? _dataTemplate;
+    private readonly DataTemplateSelector? _dataTemplateSelector;
 
-    public ItemTemplateWrapper(IDataTemplate dataTemplate) => _dataTemplate = dataTemplate;
+    public ItemTemplateWrapper(IDataTemplate? dataTemplate) => _dataTemplate = dataTemplate;
 
     public ItemTemplateWrapper(DataTemplateSelector dts) => _dataTemplateSelector = dts;
 
     protected override Control GetElementCore(ElementFactoryGetArgs args)
     {
-        var selectedTemplate = _dataTemplate ?? _dataTemplateSelector.SelectTemplate(args.Data);
+        var selectedTemplate = _dataTemplate ?? _dataTemplateSelector?.SelectTemplate(args.Data);
 
         // Check if selected template we got is valid
         if (selectedTemplate == null)
         {
             // Null template, use other SelectTemplate method
-            selectedTemplate = _dataTemplateSelector.SelectTemplate(args.Data, null);
+            selectedTemplate = _dataTemplateSelector?.SelectTemplate(args.Data, null);
 
             // WinUI errors out here, we'll just use FuncDataTemplate.Default
             if (selectedTemplate == null)
             {
                 selectedTemplate = FuncDataTemplate.Default;
                 Logger.TryGet(LogEventLevel.Information, "NavigationViewItemsFactory")?
-                    .Log("", $"No DataTemplate found for type {args.Data.GetType()}. Using default instead");
+                    .Log("", $"No DataTemplate found for type {args.Data?.GetType()}. Using default instead");
             }
         }
 
         var recPool = RecyclePool.GetPoolInstance(selectedTemplate);
-        Control element = null;
+        Control? element = null;
 
         if (recPool != null)
         {
@@ -200,16 +200,21 @@ internal class ItemTemplateWrapper : ElementFactory
     protected override void RecycleElementCore(ElementFactoryRecycleArgs args)
     {
         var element = args.Element;
-        var selectedTemplate = _dataTemplate ?? element.GetValue<IDataTemplate>(OriginTemplateProperty);
-
-        var recPool = RecyclePool.GetPoolInstance(selectedTemplate);
-
-        if (recPool == null)
+        if (element != null)
         {
-            recPool = new RecyclePool();
-            RecyclePool.SetPoolInstance(selectedTemplate, recPool);
+            var selectedTemplate = _dataTemplate ?? element.GetValue(OriginTemplateProperty);
+            if (selectedTemplate is not null)
+            {
+                var recPool = RecyclePool.GetPoolInstance(selectedTemplate);
+                if (recPool is null)
+                {
+                    recPool = new RecyclePool();
+                    RecyclePool.SetPoolInstance(selectedTemplate, recPool);
+                }
+
+                recPool.PutElement(element, string.Empty, args.Parent);
+            }
         }
 
-        recPool.PutElement(args.Element, string.Empty, args.Parent);
     }
 }
