@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0</TargetFrameworks>
@@ -17,7 +17,7 @@
 
   <PropertyGroup Label="Version Info">
     <AvaloniaVersion>11.0.999-cibuild0034121-beta</AvaloniaVersion>
-    <FluentAvaloniaUIVersion>2.0.0-preview7.1</FluentAvaloniaUIVersion>
+    <FluentAvaloniaUIVersion>2.0.0-preview8</FluentAvaloniaUIVersion>
     <Version>$(FluentAvaloniaUIVersion)</Version>
     <AssemblyVersion>2.0.0.5</AssemblyVersion>
   </PropertyGroup>
