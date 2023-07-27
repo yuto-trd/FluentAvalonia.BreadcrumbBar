@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Version Info">
-    <AvaloniaVersion>11.0.0</AvaloniaVersion>
+    <AvaloniaVersion>11.0.1</AvaloniaVersion>
     <FluentAvaloniaUIVersion>2.0.0</FluentAvaloniaUIVersion>
     <Version>$(FluentAvaloniaUIVersion)</Version>
     <AssemblyVersion>2.0.0.5</AssemblyVersion>
