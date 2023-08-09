@@ -7,7 +7,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Styling;
 
+using FluentAvalonia.Styling;
 using FluentAvalonia.UI.Controls;
 using FluentAvalonia.UI.Windowing;
 
@@ -26,22 +28,34 @@ public partial class MainWindow : AppWindow
 
         Large.GetObservable(ToggleButton.IsCheckedProperty)
             .Subscribe(x =>
-        {
-            if (x == true)
             {
-                BreadcrumbBar.Resources["BreadcrumbBarChevronPadding"] = new Thickness(4, 4, 4, 0);
-                BreadcrumbBar.Resources["BreadcrumbBarItemFontWeight"] = FontWeight.SemiBold;
-                BreadcrumbBar.Resources["BreadcrumbBarItemThemeFontSize"] = 24d;
-                BreadcrumbBar.Resources["BreadcrumbBarChevronFontSize"] = 16d;
-            }
-            else
+                if (x == true)
+                {
+                    BreadcrumbBar.Resources["BreadcrumbBarChevronPadding"] = new Thickness(4, 4, 4, 0);
+                    BreadcrumbBar.Resources["BreadcrumbBarItemFontWeight"] = FontWeight.SemiBold;
+                    BreadcrumbBar.Resources["BreadcrumbBarItemThemeFontSize"] = 24d;
+                    BreadcrumbBar.Resources["BreadcrumbBarChevronFontSize"] = 16d;
+                }
+                else
+                {
+                    BreadcrumbBar.Resources.Remove("BreadcrumbBarChevronPadding");
+                    BreadcrumbBar.Resources.Remove("BreadcrumbBarItemFontWeight");
+                    BreadcrumbBar.Resources.Remove("BreadcrumbBarItemThemeFontSize");
+                    BreadcrumbBar.Resources.Remove("BreadcrumbBarChevronFontSize");
+                }
+            });
+
+        ThemeConboBox.GetObservable(SelectingItemsControl.SelectedIndexProperty)
+            .Subscribe(v =>
             {
-                BreadcrumbBar.Resources.Remove("BreadcrumbBarChevronPadding");
-                BreadcrumbBar.Resources.Remove("BreadcrumbBarItemFontWeight");
-                BreadcrumbBar.Resources.Remove("BreadcrumbBarItemThemeFontSize");
-                BreadcrumbBar.Resources.Remove("BreadcrumbBarChevronFontSize");
-            }
-        });
+
+                RequestedThemeVariant = v switch
+                {
+                    1 => ThemeVariant.Dark,
+                    2 => FluentAvaloniaTheme.HighContrastTheme,
+                    0 or _ => ThemeVariant.Default,
+                };
+            });
 
         BreadcrumbBar.ItemClicked += BreadcrumbBar_ItemClicked;
     }

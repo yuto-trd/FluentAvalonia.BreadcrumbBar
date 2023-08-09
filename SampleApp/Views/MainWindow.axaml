@@ -26,9 +26,13 @@
                 Content="Add" />
 
         <CheckBox x:Name="Large" Content="large" />
+        <ComboBox Name="ThemeConboBox" SelectedIndex="0">
+            <ComboBoxItem Content="Light" />
+            <ComboBoxItem Content="Dark" />
+            <ComboBoxItem Content="HighContrast" />
+        </ComboBox>
 
-        <ui:BreadcrumbBar x:Name="BreadcrumbBar"
-                          ItemsSource="{Binding Items}">
+        <ui:BreadcrumbBar x:Name="BreadcrumbBar" ItemsSource="{Binding Items}">
             <ui:BreadcrumbBar.ItemTemplate>
                 <DataTemplate x:DataType="viewModels:ItemViewModel">
                     <ui:BreadcrumbBarItem Content="{Binding Text}" />

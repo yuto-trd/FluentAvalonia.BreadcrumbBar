@@ -1,0 +1,104 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sty="using:FluentAvalonia.Styling">
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <StaticResource x:Key="BreadcrumbBarNormalForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarHoverForegroundBrush" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarPressedForegroundBrush" ResourceKey="TextFillColorTertiaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarDisabledForegroundBrush" ResourceKey="TextFillColorDisabledBrush" />
+            <StaticResource x:Key="BreadcrumbBarFocusForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+
+            <StaticResource x:Key="BreadcrumbBarCurrentNormalForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentHoverForegroundBrush" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentPressedForegroundBrush" ResourceKey="TextFillColorTertiaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentDisabledForegroundBrush" ResourceKey="TextFillColorDisabledBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentFocusForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemForegroundPressed" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+            <StaticResource x:Key="BreadcrumbBarForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+            <SolidColorBrush x:Key="BreadcrumbBarBackgroundBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="BreadcrumbBarBorderBrush" Color="Transparent" />
+
+            <StaticResource x:Key="BreadcrumbBarEllipsisFlyoutPresenterBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <StaticResource x:Key="BreadcrumbBarNormalForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarHoverForegroundBrush" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarPressedForegroundBrush" ResourceKey="TextFillColorTertiaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarDisabledForegroundBrush" ResourceKey="TextFillColorDisabledBrush" />
+            <StaticResource x:Key="BreadcrumbBarFocusForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+
+            <StaticResource x:Key="BreadcrumbBarCurrentNormalForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentHoverForegroundBrush" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentPressedForegroundBrush" ResourceKey="TextFillColorTertiaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentDisabledForegroundBrush" ResourceKey="TextFillColorDisabledBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentFocusForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemForegroundPressed" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+            <StaticResource x:Key="BreadcrumbBarForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+            <SolidColorBrush x:Key="BreadcrumbBarBackgroundBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="BreadcrumbBarBorderBrush" Color="Transparent" />
+
+            <StaticResource x:Key="BreadcrumbBarEllipsisFlyoutPresenterBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="{x:Static sty:FluentAvaloniaTheme.HighContrastTheme}">
+            <StaticResource x:Key="BreadcrumbBarNormalForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarHoverForegroundBrush" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarPressedForegroundBrush" ResourceKey="TextFillColorTertiaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarDisabledForegroundBrush" ResourceKey="TextFillColorDisabledBrush" />
+            <StaticResource x:Key="BreadcrumbBarFocusForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+
+            <StaticResource x:Key="BreadcrumbBarCurrentNormalForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentHoverForegroundBrush" ResourceKey="TextFillColorSecondaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentPressedForegroundBrush" ResourceKey="TextFillColorTertiaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentDisabledForegroundBrush" ResourceKey="TextFillColorDisabledBrush" />
+            <StaticResource x:Key="BreadcrumbBarCurrentFocusForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemForegroundPressed" ResourceKey="TextFillColorPrimaryBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisDropDownItemForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+            <StaticResource x:Key="BreadcrumbBarForegroundBrush" ResourceKey="TextFillColorPrimaryBrush" />
+            <SolidColorBrush x:Key="BreadcrumbBarBackgroundBrush" Color="Transparent" />
+            <SolidColorBrush x:Key="BreadcrumbBarBorderBrush" Color="Transparent" />
+
+            <StaticResource x:Key="BreadcrumbBarEllipsisFlyoutPresenterBackground" ResourceKey="AcrylicBackgroundFillColorDefaultBrush" />
+            <StaticResource x:Key="BreadcrumbBarEllipsisFlyoutPresenterBorderBrush" ResourceKey="SurfaceStrokeColorFlyoutBrush" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+    <x:String x:Key="BreadcrumbBarChevronLeftToRight">&#xE974;</x:String>
+    <x:String x:Key="BreadcrumbBarChevronRightToLeft">&#xE973;</x:String>
+
+    <!--<Thickness x:Key="BreadcrumbBarChevronPadding">2,0</Thickness>-->
+    <Thickness x:Key="BreadcrumbBarChevronPadding">2,3</Thickness>
+
+    <FontWeight x:Key="BreadcrumbBarItemFontWeight">Normal</FontWeight>
+
+    <Thickness x:Key="BreadcrumbBarEllipsisFlyoutPresenterBorderThemeThickness">1</Thickness>
+
+    <StaticResource x:Key="BreadcrumbBarItemThemeFontSize" ResourceKey="ControlContentThemeFontSize" />
+    <x:Double x:Key="BreadcrumbBarChevronFontSize">12</x:Double>
+
+</ResourceDictionary>
