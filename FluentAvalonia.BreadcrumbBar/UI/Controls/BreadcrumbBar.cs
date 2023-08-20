@@ -425,7 +425,7 @@ public class BreadcrumbBar : TemplatedControl
     {
         _dataProvider.SetDataSource(ItemsSource);
 
-        UpdateItemsRepeaterItemsSource(_itemsRepeater!, _dataProvider.GetPrimaryItems());
+        UpdateItemsRepeaterItemsSource(_itemsRepeater, _dataProvider.GetPrimaryItems());
 
         if (_appliedTemplate)
         {
@@ -433,7 +433,7 @@ public class BreadcrumbBar : TemplatedControl
         }
     }
 
-    private static void UpdateItemsRepeaterItemsSource(ItemsRepeater ir, IEnumerable source)
+    private static void UpdateItemsRepeaterItemsSource(ItemsRepeater? ir, IEnumerable source)
     {
         if (ir != null)
         {
@@ -522,6 +522,9 @@ public class BreadcrumbBar : TemplatedControl
 
     private void ForceUpdateLastElement()
     {
+        if (_itemsRepeater is null)
+            return;
+
         if (_itemsRepeater!.ItemsSourceView is not null)
         {
             var itemCount = _dataProvider.Size;
