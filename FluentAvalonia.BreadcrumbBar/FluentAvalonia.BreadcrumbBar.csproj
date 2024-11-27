@@ -7,12 +7,12 @@
     <RootNamespace>FluentAvalonia</RootNamespace>
     <LangVersion>latest</LangVersion>
 
-    <RepositoryUrl>https://github.com/indigo-san/FluentAvalonia.BreadcrumbBar</RepositoryUrl>
+    <RepositoryUrl>https://github.com/yuto-trd/FluentAvalonia.BreadcrumbBar</RepositoryUrl>
     <PackageId>FluentAvalonia.BreadcrumbBar</PackageId>
     <Description>Control library which adds a WinUI BreadcrumbBar to the FluentAvalonia package</Description>
     <PackageTags>c-sharp;xaml;cross-platform;dotnet;dotnetcore;avalonia;avaloniaui;fluent;fluent-design</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Authors>https://github.com/indigo-san</Authors>
+    <Authors>https://github.com/yuto-trd</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 

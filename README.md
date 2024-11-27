@@ -5,7 +5,7 @@
 
 Control library which adds a WinUI BreadcrumbBar to the FluentAvalonia package.
 
-[![Normal style](https://raw.githubusercontent.com/indigo-san/FluentAvalonia.BreadcrumbBar/main/Images/Normal.png)](https://github.com/indigo-san/FluentAvalonia.BreadcrumbBar/blob/main/SampleApp)
+[![Normal style](https://raw.githubusercontent.com/yuto-trd/FluentAvalonia.BreadcrumbBar/main/Images/Normal.png)](https://github.com/yuto-trd/FluentAvalonia.BreadcrumbBar/blob/main/SampleApp)
 
 ## Usage
 Reference the Nuget package and include the Style in your application
@@ -19,6 +19,6 @@ Reference the Nuget package and include the Style in your application
 </App.Styles>
 ```
 
-**[Large style](https://github.com/indigo-san/FluentAvalonia.BreadcrumbBar/blob/main/SampleApp/Views/MainWindow.axaml.cs#L29)**
+**[Large style](https://github.com/yuto-trd/FluentAvalonia.BreadcrumbBar/blob/main/SampleApp/Views/MainWindow.axaml.cs#L29)**
 
-![Large style](https://raw.githubusercontent.com/indigo-san/FluentAvalonia.BreadcrumbBar/main/Images/Large.png)
+![Large style](https://raw.githubusercontent.com/yuto-trd/FluentAvalonia.BreadcrumbBar/main/Images/Large.png)
